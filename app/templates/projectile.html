@@ -1,0 +1,403 @@
+{% extends "layout.html" %}
+
+{% block title %}平抛运动{% endblock %}
+
+{% block content %}
+<div class="simulation-header">
+    <h1 class="gradient-text">平抛运动模拟</h1>
+</div>
+
+<div class="row">
+    <div class="col-lg-3 mb-2">
+        <div class="simulation-controls card sticky-top">
+            <div class="card-body pb-1">
+                <div class="form-group mb-1">
+                    <label for="initial-velocity" class="form-label mb-0">初始速度 (m/s)</label>
+                    <input type="range" class="form-range" id="initial-velocity" min="1" max="30" step="1" value="10">
+                    <div class="d-flex justify-content-between">
+                        <span class="small">1</span>
+                        <span id="velocity-value" class="small">10 m/s</span>
+                        <span class="small">30</span>
+                    </div>
+                </div>
+                <div class="form-group mb-1">
+                    <label for="initial-height" class="form-label mb-0">初始高度 (m)</label>
+                    <input type="range" class="form-range" id="initial-height" min="1" max="30" step="1" value="10">
+                    <div class="d-flex justify-content-between">
+                        <span class="small">1</span>
+                        <span id="height-value" class="small">10 m</span>
+                        <span class="small">30</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body theory-section pt-1 border-top">
+                <h3 class="section-title text-center mb-3" style="font-size: 16px; font-weight: 600; color: #2a4b8d; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); background: linear-gradient(to right, rgba(67, 97, 238, 0.05), rgba(114, 9, 183, 0.05));">平抛运动原理</h3>
+                <div class="theory-content" style="padding: 5px 0 90px 0; display: flex; flex-direction: column; height: calc(100vh - 220px); overflow-y: auto;">
+                    <div class="principle-item" style="margin-bottom: 10px;">
+                        <span class="principle-icon" style="font-size: 18px; width: 30px; text-align: center; color: #3a86ff;">🔄</span>
+                        <div style="flex: 1;">
+                            <h5 style="font-size: 14px; margin: 0; font-weight: 600; color: #3a86ff;">水平方向</h5>
+                            <p style="margin: 0; font-size: 12px;">物体做匀速直线运动</p>
+                        </div>
+                    </div>
+                    
+                    <div class="principle-item" style="margin-bottom: 10px;">
+                        <span class="principle-icon" style="font-size: 18px; width: 30px; text-align: center; color: #4361ee;">⬇️</span>
+                        <div style="flex: 1;">
+                            <h5 style="font-size: 14px; margin: 0; font-weight: 600; color: #4361ee;">竖直方向</h5>
+                            <p style="margin: 0; font-size: 12px;">物体做自由落体运动</p>
+                        </div>
+                    </div>
+                    
+                    <div class="principle-item" style="margin-bottom: 10px;">
+                        <span class="principle-icon" style="font-size: 18px; width: 30px; text-align: center; color: #7209b7;">📊</span>
+                        <div style="flex: 1;">
+                            <h5 style="font-size: 14px; margin: 0; font-weight: 600; color: #7209b7;">运动轨迹</h5>
+                            <p style="margin: 0; font-size: 12px;">形成半个抛物线</p>
+                        </div>
+                    </div>
+                    
+                    <div class="principle-item" style="margin-bottom: 10px;">
+                        <span class="principle-icon" style="font-size: 18px; width: 30px; text-align: center; color: #ff006e;">🔬</span>
+                        <div style="flex: 1;">
+                            <h5 style="font-size: 14px; margin: 0; font-weight: 600; color: #ff006e;">落地时间</h5>
+                            <p style="margin: 0; font-size: 12px;">仅与初始高度有关</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-item" style="margin-bottom: 10px;">
+                        <span class="principle-icon" style="font-size: 18px; width: 30px; text-align: center; color: #f72585;">🎯</span>
+                        <div style="flex: 1;">
+                            <h5 style="font-size: 14px; margin: 0; font-weight: 600; color: #f72585;">水平距离</h5>
+                            <p style="margin: 0; font-size: 12px;">与初始速度和落地时间有关</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-item" style="margin-bottom: 10px;">
+                        <span class="principle-icon" style="font-size: 18px; width: 30px; text-align: center; color: #8338ec;">🔋</span>
+                        <div style="flex: 1;">
+                            <h5 style="font-size: 14px; margin: 0; font-weight: 600; color: #8338ec;">能量转化</h5>
+                            <p style="margin: 0; font-size: 12px;">动能与势能相互转化</p>
+                        </div>
+                    </div>
+                    
+                    <div class="principle-formula" style="margin-top: 10px; padding: 12px; background-color: rgba(0,0,0,0.02); border-radius: 8px;">
+                        <h5 style="font-size: 14px; margin: 0 0 8px 0; font-weight: 600; color: #2a4b8d; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 5px;">基本公式</h5>
+                        <p class="formula mb-0" style="font-size: 13px; margin-bottom: 8px !important;">x = v<sub>0</sub>t</p>
+                        <p class="formula mb-0" style="font-size: 13px; margin-bottom: 8px !important;">y = h - ½gt²</p>
+                        <p class="formula mb-0" style="font-size: 13px; margin-bottom: 8px !important;">t = √(2h/g)</p>
+                        <p class="formula mb-0" style="font-size: 13px; margin-bottom: 8px !important;">R = v<sub>0</sub>√(2h/g)</p>
+                    </div>
+
+                    <div class="principle-formula" style="margin-top: 15px; padding: 12px; background-color: rgba(0,0,0,0.02); border-radius: 8px;">
+                        <h5 style="font-size: 14px; margin: 0 0 8px 0; font-weight: 600; color: #2a4b8d; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 5px;">能量关系</h5>
+                        <p class="formula mb-0" style="font-size: 13px; margin-bottom: 8px !important;">E<sub>k</sub> = ½mv²</p>
+                        <p class="formula mb-0" style="font-size: 13px; margin-bottom: 8px !important;">E<sub>p</sub> = mgh</p>
+                        <p class="formula mb-0" style="font-size: 13px; margin-bottom: 8px !important;">E<sub>k</sub> + E<sub>p</sub> = 常量</p>
+                    </div>
+                </div>
+                
+                <div class="control-buttons" style="position: fixed; bottom: 10px; width: calc(100% - 28px); max-width: 250px; display: flex; flex-direction: column; gap: 10px;">
+                    <button id="reset-params" class="btn w-100" style="background: linear-gradient(45deg, #4361ee, #7209b7); color: white; border-radius: 20px; font-size: 13px; padding: 8px 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: none; transition: all 0.3s ease;">
+                        <i class="fas fa-redo-alt" style="margin-right: 8px;"></i>重置参数
+                    </button>
+                    <button id="reset-all-zoom" class="btn w-100" style="background: white; color: #4361ee; border-radius: 20px; font-size: 13px; padding: 8px 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid rgba(67, 97, 238, 0.3); transition: all 0.3s ease;">
+                        <i class="fas fa-search" style="margin-right: 8px;"></i>重置缩放
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-9">
+        <div class="simulation-results">
+            <div class="card mb-2">
+                <div class="card-header py-1">
+                    <h3 class="mb-0">地球重力环境 (9.8 m/s²)</h3>
+                </div>
+                <div class="card-body chart-container">
+                    <canvas id="earth-chart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header py-1">
+                    <h3 class="mb-0">月球重力环境 (1.62 m/s²)</h3>
+                </div>
+                <div class="card-body chart-container">
+                    <canvas id="moon-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const velocitySlider = document.getElementById('initial-velocity');
+    const velocityValue = document.getElementById('velocity-value');
+    const heightSlider = document.getElementById('initial-height');
+    const heightValue = document.getElementById('height-value');
+    
+    let earthChart = null;
+    let moonChart = null;
+    let initialHeight = 10; // 默认初始高度为10米
+    let isSimulating = false; // 是否正在进行模拟计算
+    let updateTimer = null; // 用于防抖的定时器
+    
+    // 更新速度显示并触发模拟
+    velocitySlider.addEventListener('input', function() {
+        velocityValue.textContent = this.value + ' m/s';
+        scheduleUpdate();
+    });
+    
+    // 更新高度显示并触发模拟
+    heightSlider.addEventListener('input', function() {
+        initialHeight = parseInt(this.value);
+        heightValue.textContent = initialHeight + ' m';
+        scheduleUpdate();
+    });
+    
+    // 防抖函数，避免频繁触发模拟
+    function scheduleUpdate() {
+        if (updateTimer) {
+            clearTimeout(updateTimer);
+        }
+        updateTimer = setTimeout(updateSimulation, 300);
+    }
+    
+    // 创建图表
+    function createChart(canvasId, title) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [
+                    {
+                        label: '小质量',
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        showLine: true,
+                        tension: 0.1
+                    },
+                    {
+                        label: '中质量',
+                        data: [],
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        showLine: true,
+                        tension: 0.1
+                    },
+                    {
+                        label: '大质量',
+                        data: [],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        showLine: true,
+                        tension: 0.1
+                    },
+                    {
+                        label: '起始点',
+                        data: [{x: 0, y: initialHeight}],
+                        pointBackgroundColor: 'rgba(255, 0, 0, 1)',
+                        pointBorderColor: 'rgba(255, 0, 0, 1)',
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        showLine: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: title
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `(${context.raw.x.toFixed(2)}, ${context.raw.y.toFixed(2)})`;
+                            }
+                        }
+                    },
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'xy'
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true,
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'xy',
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: '水平距离 (m)'
+                        },
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            stepSize: 10
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '高度 (m)'
+                        },
+                        min: 0,
+                        max: 40,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+        
+        return chart;
+    }
+    
+    // 更新图表中的起始点
+    function updateStartingPoint(chart, height) {
+        if (!chart) return;
+        chart.data.datasets[3].data = [{x: 0, y: height}];
+        chart.update();
+    }
+    
+    // 更新模拟
+    function updateSimulation() {
+        if (isSimulating) return; // 避免多次并发请求
+        
+        isSimulating = true;
+        const initialVelocity = parseFloat(velocitySlider.value);
+        
+        // 显示加载状态
+        updateStatus('计算中...');
+        
+        // 发送请求到后端，包括初始高度
+        fetch('/api/projectile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                initial_velocity: initialVelocity,
+                initial_height: initialHeight
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // 处理地球重力下的结果
+            if (!earthChart) {
+                earthChart = createChart('earth-chart', '地球重力环境下的平抛运动');
+            }
+            
+            // 处理月球重力下的结果
+            if (!moonChart) {
+                moonChart = createChart('moon-chart', '月球重力环境下的平抛运动');
+            }
+            
+            // 更新图表数据
+            updateChartData(earthChart, data.earth);
+            updateChartData(moonChart, data.moon);
+            
+            // 清除状态信息
+            updateStatus('');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            updateStatus('计算出错，请重试');
+        })
+        .finally(() => {
+            isSimulating = false;
+        });
+    }
+    
+    // 更新状态信息
+    function updateStatus(message) {
+        const earthCanvas = document.getElementById('earth-chart');
+        const moonCanvas = document.getElementById('moon-chart');
+        
+        if (message) {
+            // 显示加载状态
+            earthCanvas.style.opacity = '0.5';
+            moonCanvas.style.opacity = '0.5';
+        } else {
+            // 恢复正常显示
+            earthCanvas.style.opacity = '1';
+            moonCanvas.style.opacity = '1';
+        }
+    }
+    
+    // 更新图表数据
+    function updateChartData(chart, data) {
+        // 小质量物体数据
+        chart.data.datasets[0].data = data.small.x.map((x, i) => ({
+            x: x,
+            y: data.small.y[i]
+        }));
+        
+        // 中质量物体数据
+        chart.data.datasets[1].data = data.medium.x.map((x, i) => ({
+            x: x,
+            y: data.medium.y[i]
+        }));
+        
+        // 大质量物体数据
+        chart.data.datasets[2].data = data.large.x.map((x, i) => ({
+            x: x,
+            y: data.large.y[i]
+        }));
+        
+        // 确保起始点位置正确
+        chart.data.datasets[3].data = [{x: 0, y: initialHeight}];
+        
+        chart.update();
+    }
+    
+    // 初始创建空图表并触发首次模拟
+    earthChart = createChart('earth-chart', '地球重力环境下的平抛运动');
+    moonChart = createChart('moon-chart', '月球重力环境下的平抛运动');
+    
+    // 页面加载后立即进行一次模拟
+    updateSimulation();
+    
+    // 添加重置所有缩放按钮事件
+    document.getElementById('reset-all-zoom').addEventListener('click', function() {
+        if (earthChart) {
+            earthChart.resetZoom();
+        }
+        if (moonChart) {
+            moonChart.resetZoom();
+        }
+    });
+    
+    // 添加重置参数按钮事件
+    document.getElementById('reset-params').addEventListener('click', function() {
+        velocitySlider.value = 10;
+        heightSlider.value = 10;
+        velocityValue.textContent = "10 m/s";
+        heightValue.textContent = "10 m";
+        initialHeight = 10;
+        updateSimulation();
+    });
+});
+</script>
+{% endblock %} 

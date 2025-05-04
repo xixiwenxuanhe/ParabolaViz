@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <!-- 背景 -->
+  <rect width="800" height="400" fill="#f8f9fa" />
+  
+  <!-- 装饰性图形元素 -->
+  <circle cx="100" cy="100" r="50" fill="#3a86ff" opacity="0.2" />
+  <circle cx="700" cy="300" r="70" fill="#ff006e" opacity="0.2" />
+  <circle cx="200" cy="300" r="40" fill="#8338ec" opacity="0.2" />
+  <circle cx="600" cy="150" r="60" fill="#fb5607" opacity="0.2" />
+  
+  <!-- 平抛运动轨迹 -->
+  <path d="M 100,100 Q 300,100 350,300" stroke="#3a86ff" stroke-width="3" fill="none" />
+  <circle cx="100" cy="100" r="8" fill="#3a86ff" />
+  <circle cx="350" cy="300" r="8" fill="#3a86ff" />
+  
+  <!-- 斜抛运动轨迹 -->
+  <path d="M 450,300 Q 550,100 650,300" stroke="#ff006e" stroke-width="3" fill="none" />
+  <circle cx="450" cy="300" r="8" fill="#ff006e" />
+  <circle cx="650" cy="300" r="8" fill="#ff006e" />
+  
+  <!-- 小球速度矢量 -->
+  <line x1="100" y1="100" x2="130" y2="100" stroke="#3a86ff" stroke-width="2" />
+  <polygon points="130,100 125,95 125,105" fill="#3a86ff" />
+  
+  <line x1="450" y1="300" x2="470" y2="280" stroke="#ff006e" stroke-width="2" />
+  <polygon points="470,280 460,285 465,275" fill="#ff006e" />
+  
+  <!-- 重力加速度矢量 -->
+  <line x1="200" y1="150" x2="200" y2="180" stroke="#8338ec" stroke-width="2" />
+  <polygon points="200,180 195,175 205,175" fill="#8338ec" />
+  <text x="210" y="165" font-family="Arial" font-size="14" fill="#8338ec">g</text>
+  
+  <!-- 坐标系 -->
+  <line x1="50" y1="350" x2="750" y2="350" stroke="#333" stroke-width="1" />
+  <line x1="50" y1="350" x2="50" y2="50" stroke="#333" stroke-width="1" />
+  
+  <polygon points="750,350 745,345 745,355" fill="#333" />
+  <polygon points="50,50 45,55 55,55" fill="#333" />
+  
+  <text x="740" y="370" font-family="Arial" font-size="14" fill="#333">x</text>
+  <text x="35" y="60" font-family="Arial" font-size="14" fill="#333">y</text>
+  
+  <!-- 标题 -->
+  <text x="400" y="40" font-family="Arial" font-size="24" fill="#333" text-anchor="middle" font-weight="bold">物理运动仿真</text>
+</svg> 
